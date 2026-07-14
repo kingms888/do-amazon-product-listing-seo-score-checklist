@@ -1,0 +1,1 @@
+# do-amazon-product-listing-seo-score-checklist
