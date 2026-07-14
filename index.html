@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>Etsy & Amazon Listing SEO Score & Checklist | Seller Grader</title>
+  <meta name="description" content="Free interactive Amazon & Etsy listing SEO score and checklist. Grade your product title, bullet points, backend keywords, and more. No signup, instant score.">
+  <meta name="keywords" content="amazon listing seo checklist, etsy listing seo score, shopify profit calculator, csv to json converter, developer api response time, etsy sellers, developer tools, csv/json tools, shopify sellers, amazon sellers">
+  <meta name="author" content="Seller Grader Tool">
+  <!-- Open Graph -->
+  <meta property="og:title" content="Amazon & Etsy Listing SEO Score & Checklist">
+  <meta property="og:description" content="Grade your product listing in seconds. Free interactive checklist for sellers.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://sellertools.example.com/listing-seo-score">
+  <meta name="twitter:card" content="summary_large_image">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+    body {
+      background: #f6f8fc;
+      color: #1e293b;
+      padding: 1rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      max-width: 780px;
+      width: 100%;
+      background: white;
+      border-radius: 2rem;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+      padding: 1.8rem 1.5rem 2rem;
+      margin: 0.5rem 0 1.5rem;
+    }
+    h1 {
+      font-size: 1.9rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 0.25rem;
+      color: #0f172a;
+    }
+    .subhead {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #e9edf2;
+      padding-bottom: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .subhead p {
+      color: #475569;
+      font-size: 0.95rem;
+    }
+    .score-badge {
+      background: #f1f5f9;
+      padding: 0.4rem 1rem;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #0f172a;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+    .score-badge span {
+      color: #2563eb;
+    }
+    .checklist-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin: 1.2rem 0 1.8rem;
+    }
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      background: #fafcff;
+      padding: 0.75rem 1rem;
+      border-radius: 18px;
+      border: 1px solid #eef2f6;
+      transition: background 0.1s ease, border-color 0.1s;
+      cursor: pointer;
+    }
+    .check-item:hover {
+      background: #f1f5fe;
+      border-color: #b9d0f0;
+    }
+    .check-item input[type="checkbox"] {
+      margin-top: 0.25rem;
+      width: 1.2rem;
+      height: 1.2rem;
+      accent-color: #2563eb;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .check-item label {
+      flex: 1;
+      font-weight: 500;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      cursor: pointer;
+    }
+    .check-item .hint {
+      display: block;
+      font-weight: 400;
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-top: 0.15rem;
+    }
+    .score-panel {
+      background: #f8fafd;
+      border-radius: 24px;
+      padding: 1.2rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+      border: 1px solid #e2e8f0;
+      margin: 1rem 0 1.5rem;
+    }
+    .score-panel .score-value {
+      font-size: 2.6rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #0f172a;
+      line-height: 1;
+    }
+    .score-panel .score-label {
+      font-size: 0.9rem;
+      color: #475569;
+    }
+    .score-bar {
+      width: 100%;
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 20px;
+      margin-top: 0.3rem;
+      overflow: hidden;
+    }
+    .score-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #3b82f6, #2563eb);
+      border-radius: 20px;
+      transition: width 0.2s ease;
+    }
+    .btn-reset {
+      background: white;
+      border: 1px solid #cbd5e1;
+      padding: 0.5rem 1.2rem;
+      border-radius: 40px;
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: #1e293b;
+      cursor: pointer;
+      transition: 0.1s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+    }
+    .btn-reset:hover {
+      background: #f1f5f9;
+      border-color: #94a3b8;
+    }
+    .affiliate-resources {
+      background: #f1f5fe;
+      border-radius: 20px;
+      padding: 1.2rem 1.2rem;
+      margin: 1.8rem 0 1.2rem;
+      border: 1px solid #dbeafe;
+    }
+    .affiliate-resources h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #1e3a5f;
+    }
+    .affiliate-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem 1.2rem;
+      align-items: center;
+    }
+    .affiliate-links a {
+      color: #1e4b8a;
+      font-weight: 500;
+      font-size: 0.9rem;
+      text-decoration: none;
+      border-bottom: 1px dotted #a0c0e8;
+    }
+    .affiliate-links a:hover {
+      color: #0f2f5e;
+      border-bottom: 1px solid #2563eb;
+    }
+    .ad-placeholder {
+      background: #f9fafb;
+      border: 1px dashed #cbd5e1;
+      border-radius: 18px;
+      padding: 0.8rem 1rem;
+      margin: 1rem 0 0.5rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+    .ad-placeholder span {
+      font-weight: 500;
+      color: #334155;
+    }
+    .privacy-note {
+      font-size: 0.7rem;
+      color: #94a3b8;
+      text-align: center;
+      margin-top: 1.8rem;
+      border-top: 1px solid #e9edf2;
+      padding-top: 1rem;
+    }
+    .footer-tools {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.4rem 1rem;
+      font-size: 0.75rem;
+      color: #64748b;
+      margin: 0.5rem 0 0.2rem;
+    }
+    .footer-tools a {
+      color: #3b5998;
+      text-decoration: none;
+    }
+    .footer-tools a:hover {
+      text-decoration: underline;
+    }
+    @media (max-width: 480px) {
+      .container { padding: 1.2rem 1rem; }
+      h1 { font-size: 1.6rem; }
+      .score-panel .score-value { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>📋 Listing SEO Score & Checklist</h1>
+    <div class="subhead">
+      <p>Amazon · Etsy · Shopify sellers</p>
+      <div class="score-badge">⭐ <span id="liveCount">0</span>/10 checked</div>
+    </div>
+  </header>
+
+  <section aria-label="SEO checklist">
+    <div class="checklist-grid" id="checklistContainer">
+      <!-- 10 checklist items -->
+      <div class="check-item" data-key="title">
+        <input type="checkbox" id="chk1" data-weight="1">
+        <label for="chk1">Title includes primary keyword + brand <span class="hint">e.g. “Organic Cotton Tote – EcoBags”</span></label>
+      </div>
+      <div class="check-item" data-key="bullet_features">
+        <input type="checkbox" id="chk2" data-weight="1">
+        <label for="chk2">Bullet points highlight benefits & keywords <span class="hint">5 features with high-intent phrases</span></label>
+      </div>
+      <div class="check-item" data-key="backend_keywords">
+        <input type="checkbox" id="chk3" data-weight="1">
+        <label for="chk3">Backend search terms filled (Amazon/Etsy) <span class="hint">synonyms, misspellings, related</span></label>
+      </div>
+      <div class="check-item" data-key="image_alt">
+        <input type="checkbox" id="chk4" data-weight="1">
+        <label for="chk4">Image alt text with keywords <span class="hint">descriptive, includes product type</span></label>
+      </div>
+      <div class="check-item" data-key="price_competitive">
+        <input type="checkbox" id="chk5" data-weight="1">
+        <label for="chk5">Competitive price & clear value prop <span class="hint">matches market range</span></label>
+      </div>
+      <div class="check-item" data-key="reviews_rating">
+        <input type="checkbox" id="chk6" data-weight="1">
+        <label for="chk6">Reviews & rating above 4.0 <span class="hint">social proof boosts ranking</span></label>
+      </div>
+      <div class="check-item" data-key="a_plus_content">
+        <input type="checkbox" id="chk7" data-weight="1">
+        <label for="chk7">A+ Content / Etsy About section used <span class="hint">rich text, enhanced brand story</span></label>
+      </div>
+      <div class="check-item" data-key="category_node">
+        <input type="checkbox" id="chk8" data-weight="1">
+        <label for="chk8">Correct category & subcategory <span class="hint">browse node, precise taxonomy</span></label>
+      </div>
+      <div class="check-item" data-key="mobile_optimized">
+        <input type="checkbox" id="chk9" data-weight="1">
+        <label for="chk9">Mobile-friendly listing (images, text) <span class="hint">>70% shoppers on mobile</span></label>
+      </div>
+      <div class="check-item" data-key="call_to_action">
+        <input type="checkbox" id="chk10" data-weight="1">
+        <label for="chk10">Strong call to action & urgency <span class="hint">“Order now”, “Limited stock”</span></label>
+      </div>
+    </div>
+  </section>
+
+  <!-- Score panel -->
+  <section class="score-panel" aria-label="SEO score display">
+    <div>
+      <div class="score-label">Your Listing SEO Score</div>
+      <div class="score-value" id="scoreDisplay">0</div>
+      <div class="score-bar">
+        <div class="score-fill" id="scoreFill" style="width:0%"></div>
+      </div>
+    </div>
+    <button class="btn-reset" id="resetBtn" aria-label="Reset all checkboxes">⟲ Reset</button>
+  </section>
+
+  <!-- Ad placeholder (visible) -->
+  <div class="ad-placeholder">
+    <span>📢 Sponsored</span> — <strong>SellerToolKit Pro</strong> · Keyword gap analyzer &amp; listing grader. 
+    <a href="#" style="color:#2563eb; text-decoration: underline;">Try free →</a> 
+    <span style="display:inline-block; margin-left: 0.5rem; opacity:0.7;">(affiliate)</span>
+  </div>
+
+  <!-- Affiliate / resource section -->
+  <section class="affiliate-resources" aria-label="Seller resources">
+    <h3>🔗 Tools for sellers</h3>
+    <div class="affiliate-links">
+      <a href="#">Amazon listing optimizer</a>
+      <a href="#">Etsy SEO checklist (PDF)</a>
+      <a href="#">Shopify profit calculator</a>
+      <a href="#">CSV to JSON converter</a>
+      <a href="#">API response time tester</a>
+    </div>
+    <div style="font-size:0.75rem; color:#475569; margin-top:0.5rem;">
+      <em>Some links are affiliate. We may earn a small commission.</em>
+    </div>
+  </section>
+
+  <!-- Privacy note & metrics -->
+  <div class="privacy-note">
+    <span>🔒 Events may be counted anonymously for product improvement. No personal data collected.</span>
+    <span style="display:block; margin-top:0.3rem;">⚙️ <span id="metricStatus">anonymous metrics inactive</span></span>
+  </div>
+
+  <!-- Footer with niche keywords -->
+  <div class="footer-tools">
+    <span>etsy sellers</span><span>·</span>
+    <span>amazon listing seo checklist</span><span>·</span>
+    <span>shopify sellers</span><span>·</span>
+    <span>csv to json</span><span>·</span>
+    <span>developer api response time</span>
+  </div>
+</div>
+
+<script>
+  (function() {
+    "use strict";
+
+    // DOM refs
+    const checkboxes = document.querySelectorAll('#checklistContainer input[type="checkbox"]');
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    const scoreFill = document.getElementById('scoreFill');
+    const liveCount = document.getElementById('liveCount');
+    const resetBtn = document.getElementById('resetBtn');
+    const metricStatus = document.getElementById('metricStatus');
+
+    // total items = 10
+    const TOTAL = checkboxes.length; 
+
+    // Helper: compute and update UI
+    function updateScore() {
+      let checkedCount = 0;
+      checkboxes.forEach(cb => {
+        if (cb.checked) checkedCount++;
+      });
+      const score = Math.round((checkedCount / TOTAL) * 100);
+      scoreDisplay.textContent = score;
+      scoreFill.style.width = score + '%';
+      liveCount.textContent = checkedCount;
+
+      // optional color change for high/low
+      if (score >= 80) {
+        scoreDisplay.style.color = '#0b6e4f';
+      } else if (score >= 50) {
+        scoreDisplay.style.color = '#b45309';
+      } else {
+        scoreDisplay.style.color = '#b91c1c';
+      }
+
+      // report event (if endpoint configured)
+      reportEvent('listing_score_updated', { score: score, checked: checkedCount, total: TOTAL });
+    }
+
+    // reportEvent function – posts to window.ORGANISM_METRICS_ENDPOINT only if configured
+    function reportEvent(name, payload) {
+      if (typeof window.ORGANISM_METRICS_ENDPOINT === 'string' && window.ORGANISM_METRICS_ENDPOINT.length > 5) {
+        try {
+          const body = JSON.stringify({ event: name, payload: payload, timestamp: new Date().toISOString() });
+          // Use sendBeacon if available, else fetch
+          if (navigator.sendBeacon) {
+            navigator.sendBeacon(window.ORGANISM_METRICS_ENDPOINT, body);
+          } else {
+            fetch(window.ORGANISM_METRICS_ENDPOINT, {
+              method: 'POST',
+              body: body,
+              keepalive: true,
+              headers: { 'Content-Type': 'application/json' }
+            }).catch(() => {});
+          }
+          if (metricStatus) metricStatus.textContent = '📊 metrics endpoint active';
+        } catch (e) {
+          // silently fail
+        }
+      } else {
+        if (metricStatus) metricStatus.textContent = '⚪ anonymous metrics inactive (no endpoint)';
+      }
+    }
+
+    // reset all checkboxes
+    function resetAll() {
+      checkboxes.forEach(cb => { cb.checked = false; });
+      updateScore();
+      reportEvent('checklist_reset', { reset: true });
+    }
+
+    // attach event listeners
+    checkboxes.forEach(cb => {
+      cb.addEventListener('change', updateScore);
+    });
+
+    resetBtn.addEventListener('click', resetAll);
+
+    // initial update
+    updateScore();
+
+    // simulate a page view event
+    reportEvent('page_view', { tool: 'amazon_etsy_listing_seo_score' });
+
+    // expose for debugging (optional)
+    window.reportEvent = reportEvent;
+  })();
+</script>
+
+<!-- minimal inline config example (no endpoint by default) 
+     set window.ORGANISM_METRICS_ENDPOINT to enable telemetry -->
+<script>
+  // If you want to enable metrics, uncomment and set your endpoint:
+  // window.ORGANISM_METRICS_ENDPOINT = 'https://your-metrics.example.com/collect';
+  // For demo, we leave undefined -> no POST.
+</script>
+
+<section data-organism-discovery="hub" style="margin:32px auto 20px;max-width:1040px;padding:16px;border-top:1px solid #d9e2ec;color:#475569;font:14px/1.5 system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+  <strong style="display:block;color:#0f172a;margin-bottom:6px">More free browser tools</strong>
+  <p style="margin:0 0 8px">This page is part of an autonomous micro-tool network. Explore the live tool directory and related utilities.</p>
+  <p style="margin:0"><a href="https://kingms888.github.io/do-digital-organism-index/" style="color:#0f766e;font-weight:700">Open the tool directory</a> </p>
+</section>
+</body>
+</html>
